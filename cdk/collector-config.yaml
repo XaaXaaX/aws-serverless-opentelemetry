@@ -1,0 +1,30 @@
+# collector.yaml in the root directory
+# Set an environemnt variable 'OPENTELEMETRY_COLLECTOR_CONFIG_FILE' to
+# '/var/task/collector-config.yaml'
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: localhost:4318
+
+processors:
+
+exporters:
+  logging:
+    verbosity: basic
+  awsxray:
+
+#enables output for traces to xray
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [logging]
+    metrics:
+      receivers: [otlp]
+      exporters: [logging]
+  # telemetry:
+  #   metrics:
+  #     address: localhost:8888
+  #   logs:
